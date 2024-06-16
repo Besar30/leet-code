@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int minPatches(vector<int>& v, int n) {
+        long long  l=1,r=1e8;
+        long long a;
+        while(l<=r){
+            long long  mid=(l+r)/2;
+            long long  x=mid*(mid+1)/2;
+            if(x>=n){
+                a=mid;
+                r=mid-1;
+            }
+            else{
+                l=mid+1;
+            }
+        }
+        map<long long,long long>m;
+        long long sum=0,ans=0;
+        for(int i=0;i<v.size();i++){
+            m[v[i]]++;
+        }
+        for(int i=1;i<=a;i++){
+            if(m[i]==0&&sum<i){
+                ans++;
+                sum+=i;
+            }
+            else if(m[i]){
+                sum+=m[i]*i;
+            }
+        }
+        for(int i=0;i<v.size();i++){
+            if(v[i]>a&&v[i]<=n){
+                if(v[i]!=sum+1&&v[i]>sum){
+                    sum+=sum+1;
+                    ans++;
+                    i--;
+                    continue;
+                }
+                sum+=v[i];
+            }
+        }
+        while(sum<n){
+            ans++;
+            sum+=sum+1;
+        }
+        return ans;
+    }
+};
