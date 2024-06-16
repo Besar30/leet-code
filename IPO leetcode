@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int findMaximizedCapital(int k, int w, vector<int>& v, vector<int>& vv) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        int n=v.size();
+        priority_queue<pair<int,int>>pq;
+        priority_queue<pair<int,int>>pq2;
+        for(int i=0;i<n;i++){
+            pq.push({v[i],vv[i]});
+        }
+        int ans=w;
+        deque<pair<int,int>>d;
+        while(k&&pq.size()){
+            pair<int,int>x=pq.top();
+            if(x.second<=ans){
+                ans+=x.first;
+                pq.pop();
+                k--;
+            }
+            else{
+                pq2.push({-x.second,x.first});
+                pq.pop();
+            }
+            while(pq2.size()&&abs(pq2.top().first)<=ans){
+                pq.push({pq2.top().second,abs(pq.top().first)});
+                pq2.pop();
+            }
+        }
+        return ans;
+    }
+
+};
