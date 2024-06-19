@@ -1,0 +1,39 @@
+class Solution {
+public:
+    bool can(int d,int k,int m,vector<int>&v){
+        int con=0;
+        int a=0;
+        for(int i=0;i<v.size();i++){
+            if(v[i]<=d){
+                con++;
+            }
+            else{
+                con=0;
+            }
+            if(con==k){
+                a++;
+                con=0;
+            }
+        }
+        return a>=m;
+    }
+    int minDays(vector<int>& v, int m, int k) {
+        ios::sync_with_stdio(0);
+        cin.tie(0);
+        int l=1e8,r=0;
+        for(int i=0;i<v.size();i++){
+            l=min(v[i],l);
+            r=max(v[i],r);
+        }
+        int ans=-1;
+        while(l<=r){
+            int mid=(l+r)/2;
+            if(can(mid,k,m,v)){
+                ans=mid;
+                r=mid-1;
+            }
+            else l=mid+1;
+        }
+        return ans;
+    }
+};
