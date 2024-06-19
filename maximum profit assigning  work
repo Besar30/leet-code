@@ -1,0 +1,47 @@
+// link:https://leetcode.com/problems/most-profit-assigning-work/description/?envType=daily-question&envId=2024-06-18
+class Solution {
+public:
+    int maxProfitAssignment(vector<int>& v, vector<int>& a, vector<int>& w) {
+        priority_queue<pair<int,int>>pq;
+        priority_queue<pair<int,int>>pq2;
+
+        for(int i=0;i<v.size();i++){
+            pq.push({a[i],v[i]});
+        }
+        sort(w.rbegin(),w.rend());
+        int x=w.size();
+        int i=0;
+        int ans=0;
+        while(x--){
+            if(pq.size()&&w[i]>=pq.top().second){
+               
+                ans+=pq.top().first;
+                i++;
+            }
+            else{
+                if(pq2.size()&&abs(pq2.top().first)<=w[i]){
+                    while(pq2.size()&&abs(pq2.top().first)<=w[i]){
+                    pq.push({pq2.top().second,abs(pq2.top().first)});
+                    pq2.pop();
+                    }
+                    ans+=pq.top().first;
+                    i++;
+                    break;
+                }
+                else{
+                    while(pq.size()){
+                        if(pq.top().second<=w[i]){
+                            ans+=pq.top().first;
+                            break;
+                        }
+                        pq2.push({-pq.top().second,pq.top().first});
+                        pq.pop();
+                    }
+                    i++;
+                }
+            }
+            cout<<ans<<" ";
+        }
+        return ans;
+    }
+};
