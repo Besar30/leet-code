@@ -1,0 +1,38 @@
+// Link : https://leetcode.com/problems/magnetic-force-between-two-balls/?envType=daily-question&envId=2024-06-20
+class Solution {
+public:
+   bool can(int l,vector<int>&v,int m){
+    int x=v[0];
+    int con=0;
+    while(con<m-1){
+        int a=x+l;
+        auto it=lower_bound(v.begin(),v.end(),a);
+        if(it==v.end())break;
+        else
+        {
+            con++;
+            x=*it;
+        }
+    }
+    return con==m-1;
+   }
+    int maxDistance(vector<int>& v, int m) {
+         ios::sync_with_stdio(0);
+        cin.tie(0);
+        int n=v.size();
+        sort(v.begin(),v.end());
+        long long l=1,r=1e9;
+        int ans=0;
+        while(l<=r){
+            long long mid=(l+r)/2;
+            if(can(mid,v,m)){
+                ans=mid;
+                l=mid+1;
+            }
+            else{
+                r=mid-1;
+            }
+        }
+        return ans;
+    }
+};
