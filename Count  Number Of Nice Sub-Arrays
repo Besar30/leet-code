@@ -1,0 +1,43 @@
+//Link : https://leetcode.com/problems/count-number-of-nice-subarrays/?envType=daily-question&envId=2024-06-22
+class Solution {
+public:
+     int numberOfSubarrays(vector<int>& v, int k) {
+         ios::sync_with_stdio(0);
+        cin.tie(0);
+        int ans=0,l=0,r=0,con=0,a=0,n=v.size();
+        while(l<n){
+            if(con==k&&r==n){
+                ans+=a;
+                if(v[l]%2){
+                    con--;
+                    a=0;
+                }
+                l++;
+            }
+            else if(r==n){
+                break;
+            }
+            else if(v[r]%2==0&&con==k){
+                a++;
+                r++;
+            }
+            else if(v[r]%2&&con==k){
+                ans+=a;
+                 if(v[l]%2){
+                    con--;
+                    a=0;
+                }
+                l++;
+            }
+            else if(v[r]%2&&con<k){
+                con++;
+                if(con==k)a++;
+                r++;
+            }
+            else{
+                r++;
+            }
+        }
+        return ans;
+    }
+};
