@@ -1,0 +1,55 @@
+//Link :https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/?envType=daily-question&envId=2024-06-23
+//Topic --->Sliding Window and priority_queue and implementation
+class Solution {
+public:
+    int longestSubarray(vector<int>& v, int c) {
+          ios::sync_with_stdio(0);
+          cin.tie(0);
+        int n=v.size();
+        priority_queue<int>mi,mx,xx;
+        map<int,int>m;
+        m[v[0]]++;
+        mi.push(-v[0]);
+        mx.push(v[0]);
+        int ans=0;
+        int l=0,r=0;
+        while(r<n){
+            if(mx.size()&&m[mx.top()]==0){
+                mx.pop();
+                continue;
+            }
+            if(mi.size()&&m[abs(mi.top())]==0){
+                mi.pop();
+                continue;
+            }
+            if(mx.empty()||(l==r&&r!=0)){
+                mx=xx;
+                mi=xx;
+                mx.push(v[r]);
+                mi.push(-v[r]);
+                l=r;
+                m[v[r]]++;
+                r++;
+                continue;
+            }
+            int x=v[r],a=abs(x-abs(mi.top())),b=abs(x-mx.top());
+            if(a<=c&&b<=c){
+                ans=max(ans,r-l+1);
+                mx.push(x);
+                mi.push(-x);
+                if(r!=0)m[v[r]]++;
+                r++;
+            }
+            else{
+                m[v[l]]--;
+                if(mx.top()==v[l])mx.pop();
+                if(abs(mi.top())==v[l]){
+                    mi.pop();
+                }
+                l++;
+            }
+            
+        }
+        return ans;
+    }
+};
