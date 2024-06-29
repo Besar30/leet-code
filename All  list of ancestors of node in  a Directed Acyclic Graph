@@ -1,0 +1,43 @@
+//Link:https://leetcode.com/problems/all-ancestors-of-a-node-in-a-directed-acyclic-graph/?envType=daily-question&envId=2024-06-29
+class Solution {
+public:
+    vector<vector<int>> getAncestors(int n,vector<vector<int>>& e) {
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+       int m[n];
+       memset(m,0,sizeof m);
+       int x=e.size();
+       vector<vector<int>>v(n);
+       for(int i=0;i<x;i++){
+        v[e[i][0]].push_back(e[i][1]);
+       }
+        for(int i=0;i<x;i++){
+            m[e[i][1]]++;
+        }
+        int cc[n];
+        memset(cc,0,sizeof cc);
+        deque<int>d;
+        for(int i=0;i<n;i++){
+            if(m[i]==0)d.push_back(i);
+        }
+        vector<set<int>>ans(n);
+        vector<vector<int>>ans1(n);
+        while(!d.empty()){
+            int node=d.front();
+            d.pop_front();
+            if(cc[node]!=m[node])continue;
+            for(auto it:v[node]){
+                for(auto it1:ans[node])ans[it].insert(it1);
+                ans[it].insert(node);
+                cc[it]++;
+                if(cc[it]==m[it])
+                d.push_back(it);
+            }
+        }
+        for(int i=0;i<n;i++){
+            ans1[i].assign(ans[i].begin(),ans[i].end());
+        }
+        return ans1;
+    }
+};
