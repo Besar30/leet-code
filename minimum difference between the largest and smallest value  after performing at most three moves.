@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int solve(int l,int r,vector<int >&ans,int con){
+        if(con==3)return ans[r]-ans[l];
+        long long ch1=1e10;
+        ch1=solve(l+1,r,ans,con+1);
+        long long ch2=1e10;
+        ch2=solve(l,r-1,ans,con+1);
+        return min(ch1,ch2);
+    }
+    int minDifference(vector<int>& v) {
+        int n=v.size();
+        sort(v.begin(),v.end());
+        if(v.size()<=4)return 0;
+        else{
+            return solve(0,n-1,v,0);
+        }
+    }
+};
