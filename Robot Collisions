@@ -1,0 +1,54 @@
+//Link :https://leetcode.com/problems/robot-collisions/description/
+class Solution {
+public:
+    vector<int> survivedRobotsHealths(vector<int>& p, vector<int>& h, string s) {
+                ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(0);
+        vector<pair<int,pair<char,pair<int,int>>>>a;
+        for(int i=0;i<s.size();i++){
+            a.push_back({p[i],{s[i],{h[i],i}}});
+        }
+        sort(a.begin(),a.end());
+        vector<pair<int,int>>x;
+        vector<pair<int,int>>ans;
+        for(int i=0;i<s.size();i++){
+            if(a[i].second.first=='R'){
+                x.push_back({a[i].second.second.first,a[i].second.second.second});
+            }
+            else{
+                int ch=1;
+                int c=a[i].second.second.first;
+                if(x.size()){
+                    while(x.size()&&ch&&c){
+                        if(c==x.back().first){
+                            x.pop_back();
+                            c=0;
+                            break;
+                        }
+                        else if(c>x.back().first){
+                            x.pop_back();
+                            c--;
+                        }
+                        else{
+                            x.back().first--;
+                            ch=0;
+                            break;
+                        }
+                    }
+                    if(ch&&c){
+                        ans.push_back({a[i].second.second.second,c});
+                    }
+                }
+                else{
+                    ans.push_back({a[i].second.second.second,a[i].second.second.first});
+                }
+            }
+        }
+        for(auto it:x){
+            ans.push_back({it.second,it.first});
+        }
+        sort(ans.begin(),ans.end());
+        vector<int>o;
+        for(auto it:ans)o.push_back(it.second);
+        return o;
+    }
+};
