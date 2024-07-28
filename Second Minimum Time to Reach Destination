@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int secondMinimum(int n, vector<vector<int>>& edges, int time, int change) {
+        ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(0);
+        vector<vector<int>>v(n+1);
+        for(int i=0;i<edges.size();i++){
+            v[edges[i][0]].push_back(edges[i][1]);
+            v[edges[i][1]].push_back(edges[i][0]);
+        }
+        int ch=0;
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+        pq.push({0,1});
+        vector<long long>vv;
+        long long ans=0;
+        vector<int>freq(n+1,0),dis(n+1,0);
+        while(!pq.empty()){
+            int node=pq.top().second;
+            long long t=pq.top().first;
+            pq.pop();
+            for(auto it:v[node]){
+                if(freq[it]==2)continue;
+                int a=t/change;
+                long long x=t;
+                if(a%2==0){
+                    x+=time;
+                }
+                else{
+                    x+=time+(change-x%change);
+                }
+                pq.push({x,it});
+                if(it==n){
+                    if(x==ans)continue;
+                    ans=x;
+                    vv.push_back(x);
+                }
+                if(dis[it]!=x)
+                freq[it]++;
+                dis[it]=x;
+            }
+            if(vv.size()==2)break;
+        }
+        return vv[1];
+    }
+};
