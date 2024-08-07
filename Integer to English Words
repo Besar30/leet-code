@@ -1,0 +1,157 @@
+//link : https://leetcode.com/problems/number-of-senior-citizens/?envType=daily-question&envId=2024-08-01
+class Solution {
+public:
+    map<int,string>level;
+    map<int,string>one;
+    int strTOint(string ss){
+    int num=0;
+    stringstream s;
+    s<<ss;
+    s>>num;
+    return num;
+    }
+    vector<string>s;
+    string solve(int i,string x){
+        int xx=strTOint(x);
+        if(xx==0)return "";
+        else{
+            x=to_string(xx);
+        }
+        string res="";
+        if(x.size()==3){
+            cout<<x<<" ";
+            int a=x[0]-'0';
+            res+=one[a];
+            res+=" ";
+            res+=level[1];
+           res+=" ";
+           if(x[1]!='1'&&x[1]!='0'){
+           a=x[1]-'0';
+           a*=10;
+           res+=one[a];
+           res+=" ";
+           if(x[2]!='0')
+           {res+=one[(x[2]-'0')];
+           if(i!=0)
+            res+=" ";
+           }
+           }
+           else if(x[1]=='0'){
+            if(x[2]=='0'){
+                if(i==0)res.pop_back();
+            }
+            else{
+                res+=one[x[2]-'0'];
+                if(i!=0)res+=" ";
+            }
+           }
+           else{
+            string aa;aa.push_back(x[1]);aa.push_back(x[2]);
+                int a=strTOint(aa);
+                res+=one[a];
+                if(i!=0)
+                res+=" ";
+           }
+           
+        }
+        else if(x.size()==2){
+            if(x[0]!='1'){
+           int a=x[0]-'0';
+           a*=10;
+           res+=one[a];
+            res+=" ";
+           if(x[1]!='0')
+           {res+=one[(x[1]-'0')];
+             if(i!=0)
+            res+=" ";
+           }
+            }
+            else{
+                int a=strTOint(x);
+                res+=one[a];
+                if(i!=0)
+                res+=" ";
+            }
+        }
+        else{
+            res+=one[x[0]-'0'];
+            if(i!=0)
+            res+=" ";
+        }
+        return res;
+    }
+    string numberToWords(int num){
+        ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(0);
+        if(num==0)return "Zero";
+        level[1]="Hundred";
+        level[2]="Thousand";
+        level[3]="Million";
+        level[4]="Billion";
+        one[1]="One";
+        one[2]="Two";
+        one[3]="Three";
+        one[4]="Four";
+        one[5]="Five";
+        one[6]="Six";
+        one[7]="Seven";
+        one[8]="Eight";
+        one[9]="Nine";
+        one[10]= "Ten";
+        one[11]= "Eleven";
+        one[12]= "Twelve";
+        one[13]= "Thirteen";
+        one[14]= "Fourteen";
+        one[15]= "Fifteen";
+        one[16]= "Sixteen";
+        one[17]= "Seventeen";
+        one[18]= "Eighteen";
+        one[19]= "Nineteen";
+        one[20]= "Twenty";
+        one[30]= "Thirty";
+        one[40]= "Forty";
+        one[50]= "Fifty";
+        one[60]= "Sixty";
+        one[70]= "Seventy";
+        one[80]= "Eighty";
+        one[90]= "Ninety";
+        if(num<=9){
+            return one[num];
+        }
+        else if(num<20){
+          
+            return one[num];
+        }
+        else{
+            string a;
+           
+            while(num){
+                int x=num%10;
+                a+=to_string(x);
+                if(a.size()==3){
+                    std::reverse(a.begin(),a.end());
+                    s.push_back(a);
+                    a="";
+                }
+                num/=10;
+            }
+            if(a.size()){
+                std::reverse(a.begin(),a.end());
+                    s.push_back(a);
+                    a="";
+            }
+            vector<string>ans;
+            for(int i=0;i<s.size();i++){
+                string aaa=solve(i,s[i]);
+                if(i!=0&&aaa.size()){
+                    ans.push_back(level[i+1]+" ");
+                }
+                    ans.push_back(aaa);
+            }
+            string ans1;
+            std::reverse(ans.begin(),ans.end());
+            for(auto it:ans)ans1+=it;
+            if(ans1[ans1.size()-1]==' ')ans1.pop_back();
+            return ans1;
+        }
+    }
+};
